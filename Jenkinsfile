@@ -1,5 +1,10 @@
 pipeline {
   agent any
+  environment {
+    awsRegion = 'eu-central-1'
+    dockerPath = 'halzamly/springbootdemo'
+  }
+
   stages {
     stage('Lint Dockerfile') {
       steps {
@@ -8,9 +13,6 @@ pipeline {
     }
 
     stage('Build App') {
-      agent {
-        docker { image 'maven:3.6.3-jdk-11' }
-      }
       steps {
         sh 'mvn clean package -DskipTests=true'
         archiveArtifacts 'target/*.jar'
@@ -41,8 +43,5 @@ pipeline {
         }
       }
     }
-    environment {
-      awsRegion = 'eu-central-1'
-      dockerPath = 'halzamly/springbootdemo'
-    }
+
   }
