@@ -9,10 +9,7 @@ pipeline {
 
     stage('Build App') {
       agent {
-        node {
-          label 'maven:3.6.3-jdk-11'
-        }
-
+        docker { image 'maven:3.6.3-jdk-11' }
       }
       steps {
         sh 'mvn clean package -DskipTests=true'
@@ -29,21 +26,23 @@ pipeline {
 
     stage('Build Image') {
       steps {
-        sh 'dockerImage = docker.build dockerpath'
+        script {
+          dockerImage = docker.build dockerPath
+        }
       }
     }
 
     stage('Push Image') {
       steps {
-        sh '''docker.withRegistry( \'\', registryCredential ) {
-dockerImage.push()
-}'''
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
         }
       }
-
     }
     environment {
       awsRegion = 'eu-central-1'
-      dockerpath = 'halzamly/springbootdemo'
+      dockerPath = 'halzamly/springbootdemo'
     }
   }
