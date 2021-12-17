@@ -1,0 +1,144 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Capstone Project Dashboard</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+    <style>
+.footer-basic {
+  padding: 20px 0;
+  background-color: #a7adb5;
+  color: #ffffff;
+   width:100%;
+   height:70px;
+   bottom:0px;
+   position:fixed;
+   margin-left: 0;
+}
+
+.footer-basic .copyright {
+  margin-top: 0;
+  text-align: center;
+  font-size: 15px;
+  color: #ffffff;
+  font-family:verdana;
+}
+
+    /* Style the tab */
+    .tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    }
+
+    /* Style the buttons that are used to open the tab content */
+    .tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 18px;
+    }
+
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+    background-color: #ddd;
+    }
+
+    /* Create an active/current tablink class */
+    .tab button.active {
+    background-color: #ccc;
+    }
+
+    /* Style the tab content */
+    .tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+    }
+
+    .tabcontent {
+  animation: fadeEffect 1s; /* Fading effect takes 1 second */
+   padding-left: 2%;
+}
+
+/* Go from zero to full opacity */
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+</style>
+
+</head>
+
+<body style="margin: 0 0 0 0;">
+
+<header style="background-color: #00abf0; color: #fff; height: 65px;">
+    <h3 style="font-family:verdana; margin: 0; padding: 20px 20px 20px 20px;"> Capstone Project - Udacity DevOps Nanodegree</h3>
+</header>
+
+<div class="tab">
+    <button class="tablinks" onclick="operaizeServices(event, 'overview')" id="defaultOpen">Project Overview</button>
+    <button class="tablinks" onclick="operaizeServices(event, 'info')">Student Information</button>
+</div>
+
+<div id="overview" class="tabcontent">
+    <h3 style="font-family:verdana; padding: 0px 0px 0px 0px; color:#00abf0">Project Overview</h3>
+    <p style="font-family:verdana">In this project I will apply the skills and knowledge which were developed throughout the Cloud DevOps Nanodegree program. These include:</p>
+    <ul style="font-family:verdana">
+        <li>Working in AWS</li>
+        <li>Using Jenkins to implement Continuous Integration and Continuous Deployment</li>
+        <li>Building pipelines</li>
+        <li>Working with CloudFormation to deploy clusters</li>
+        <li>Building Kubernetes clusters</li>
+        <li>Building Docker containers in pipelines</li>
+    </ul>
+</div>
+
+<div id="info" class="tabcontent">
+    <h3 style="font-family:verdana; padding: 0px 0px 0px 0px; color:#00abf0">Student Information</h3>
+    <img src="Hossam.jpg" style="width: 200px;">
+    <br>
+    <ul style="font-family:verdana">
+        <li>Hossam Alzamly</li>
+        <li>Cloud DevOps Engineer</li>
+        <li>Company: Operaize</li>
+        <li><a class="mbri-globe mbr-iconfont mbr-iconfont-btn btn btn-sm btn-primary display-4" href="https://www.linkedin.com/in/hossam-alzamly-ba730aba">
+            Linkedin</a></li>
+    </ul>
+</div>
+
+<script>
+function operaizeServices(evt, ServiceName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(ServiceName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+
+<div class="footer-basic">
+    <footer>
+        <p class="copyright">Udacity DevOps Nanodegree &#169 2021 - All right reserved.</p>
+    </footer>
+</div>
+
+</body>
+
+</html>
