@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Build image and add a descriptive tag
-docker build --tag=halzamly/springbootdemo ..
+docker build --tag=halzamly/springbootdemo .
 
 # List docker images
 docker image ls

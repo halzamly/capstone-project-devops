@@ -4,7 +4,7 @@ FROM maven:3.6.3-jdk-11
 WORKDIR /app
 
 # Copy source code to working directory
-COPY demoApp/target/*.jar app.jar
+COPY target/*.jar app.jar
 
 # Expose port 80
 EXPOSE 80
