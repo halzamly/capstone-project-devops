@@ -1,0 +1,93 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: this template creates a security group and an EC2 instance which install a Jenkins server
+Parameters:
+  VpcId:
+    Type: String
+    Default: vpc-89ed60e3
+  PublicSubnet:
+    Type: String
+    Default: subnet-e194e18b
+  EnvironmentName:
+    Description: Environment name
+    Type: String
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+    Default: "dev"
+  AmiId:
+    Type: String
+    Description: Server AMI id
+    Default: ami-05f7491af5eef733a
+
+Resources:
+  JenkinsServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http traffic to our hosts and SSH from local only
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+  LaunchConfiguration:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Description: Initial server configuration
+    DependsOn: JenkinsServerSecurityGroup
+    Properties:
+      ImageId: !Ref AmiId
+      InstanceType: "t2.micro"
+      SecurityGroups:
+        - Ref: JenkinsServerSecurityGroup
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo su -
+          sudo apt-get update -y
+          apt install -y default-jdk
+          wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | apt-key add -
+          sh -c 'echo deb https://pkg.jenkins.io/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
+          apt-get update -y
+          apt-get install -y jenkins
+          systemctl start jenkins
+          apt-get update -y
+          apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+          apt-key fingerprint 0EBFCD88
+          add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+          apt-get update -y
+          apt-get install -y docker-ce docker-ce-cli containerd.io
+          apt-get install unzip -y
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
+          unzip /tmp/awscliv2.zip
+          ./aws/install -i /usr/local/aws-cli -b /usr/bin
+          curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+          mv /tmp/eksctl /usr/local/bin
+          curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+          chmod +x ./kubectl
+          mv ./kubectl /usr/local/bin/kubectl
+          usermod -aG docker jenkins
+          systemctl restart jenkins
+  JenkinsScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      MinSize: 1
+      MaxSize: 1
+      VPCZoneIdentifier:
+        - !Ref PublicSubnet
+      LaunchConfigurationName:
+        Ref: LaunchConfiguration
+      Tags:
+        - Key: Name
+          PropagateAtLaunch: true
+          Value: !Sub ${EnvironmentName}-jenkins-server
