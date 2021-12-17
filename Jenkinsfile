@@ -8,6 +8,12 @@ pipeline {
     }
 
     stage('Build App') {
+      agent {
+        node {
+          label 'maven:3.6.3-jdk-11'
+        }
+
+      }
       steps {
         sh 'mvn clean package -DskipTests=true'
         archiveArtifacts 'target/*.jar'
