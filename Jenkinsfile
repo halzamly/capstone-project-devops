@@ -2,7 +2,8 @@ pipeline {
   agent any
   environment {
     AWS_DEFAULT_REGION = 'eu-central-1'
-    DOCKER_BATH = 'halzamly/springbootdemo'
+    registry = 'halzamly/springbootdemo'
+    registryCredential = 'dockerhub-credentials'
   }
 
   stages {
@@ -29,7 +30,7 @@ pipeline {
     stage('Build Image') {
       steps {
         script {
-          dockerImage = docker.build DOCKER_BATH
+          dockerImage = docker.build registry + ":latest"
         }
       }
     }
