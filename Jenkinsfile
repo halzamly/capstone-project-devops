@@ -17,7 +17,7 @@ pipeline {
     stage('Test App') {
       steps {
         sh 'mvn test'
-        junit(allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml')
+        junit(allowEmptyResults: true, testResults: 'target/surefire-reports/TEST-*.xml', skipPublishingChecks: true)
       }
     }
 
