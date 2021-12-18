@@ -1,8 +1,8 @@
 pipeline {
   agent any
   environment {
-    awsRegion = 'eu-central-1'
-    dockerPath = 'halzamly/springbootdemo'
+    AWS_DEFAULT_REGION = 'eu-central-1'
+    DOCKER_BATH = 'halzamly/springbootdemo'
   }
 
   stages {
@@ -29,7 +29,7 @@ pipeline {
     stage('Build Image') {
       steps {
         script {
-          dockerImage = docker.build dockerPath
+          dockerImage = docker.build DOCKER_BATH
         }
       }
     }
