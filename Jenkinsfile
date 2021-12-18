@@ -1,11 +1,5 @@
 pipeline {
   agent any
-  environment {
-    AWS_DEFAULT_REGION = 'eu-central-1'
-    registry = 'halzamly/springbootdemo'
-    registryCredential = 'dockerhub-credentials'
-  }
-
   stages {
     stage('Lint Dockerfile') {
       steps {
@@ -23,7 +17,7 @@ pipeline {
     stage('Test App') {
       steps {
         sh 'mvn test'
-        junit(allowEmptyResults: true, testResults: 'target/surefire-reports/TEST-*.xml')
+        junit(allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml')
       }
     }
 
@@ -32,6 +26,7 @@ pipeline {
         script {
           dockerImage = docker.build registry + ":latest"
         }
+
       }
     }
 
@@ -42,7 +37,14 @@ pipeline {
             dockerImage.push()
           }
         }
+
       }
     }
+
+  }
+  environment {
+    AWS_DEFAULT_REGION = 'eu-central-1'
+    registry = 'halzamly/springbootdemo'
+    registryCredential = 'dockerhub-credentials'
   }
 }
