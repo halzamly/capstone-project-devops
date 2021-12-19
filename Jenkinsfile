@@ -42,6 +42,8 @@ pipeline {
     stage('Deploy kubernetes'){
 	  steps{
         withAWS(region:'eu-central-1', credentials:'aws-credentials') {
+	  sh 'echo "Test logging-in to aws account"'
+          sh 'aws ec2 describe-instances --region eu-central-1'
           sh 'echo "Setup Kubernetes Cluster"'
           sh 'aws eks update-kubeconfig --name dev-capstone-udacity --region eu-central-1'
           sh 'echo "Deploying to Kubernetes"'
