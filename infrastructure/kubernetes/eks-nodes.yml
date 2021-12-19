@@ -1,0 +1,54 @@
+Description: Aws Cloudformation template to create Kubernetes nodes in the EKS cluster
+
+Parameters:
+  EnvironmentName:
+    Description: An environment name that will be prefixed to resource names
+    Type: String
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+    Default: "dev"
+  ClusterName:
+    Description: Name of Kubernetes Cluster
+    Type: String
+    Default: "capstone-udacity"
+
+Resources:
+  EKSNodegroup:
+    Type: 'AWS::EKS::Nodegroup'
+    DependsOn: EKSNodeRole
+    Properties:
+      ClusterName: !Sub ${EnvironmentName}-${ClusterName}
+      NodeRole: !GetAtt EKSNodeRole.Arn
+      ScalingConfig:
+        MinSize: 1
+        DesiredSize: 1
+        MaxSize: 3
+      Labels:
+        Project: !Sub ${EnvironmentName}-${ClusterName}
+        NodeType: Default
+      Subnets:
+        Fn::Split:
+          - ","
+          - Fn::ImportValue:
+              !Sub ${EnvironmentName}-PUB-NETS
+
+  EKSNodeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${EnvironmentName}-eksNodesRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: "/"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
