@@ -36,11 +36,22 @@ pipeline {
             dockerImage.push()
           }
         }
-
       }
     }
 
+    stage('Deploy kubernetes'){
+	  steps{
+        withAWS(region:'eu-central-1', credentials:'aws-credentials') {
+          sh 'echo "Setup Kubernetes Cluster"'
+          sh 'aws eks update-kubeconfig --name dev-capstone-udacity --region eu-central-1'
+          sh 'echo "Deploying to Kubernetes"'
+          sh "kubectl apply -f ./kubernetes/deployment.yml"
+	    }
+	  }
+	}
+
   }
+
   environment {
     AWS_DEFAULT_REGION = 'eu-central-1'
     registry = 'halzamly/springbootdemo'
