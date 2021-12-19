@@ -1,12 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: this template creates a security group and an EC2 instance which install a Jenkins server
 Parameters:
-  VpcId:
-    Type: String
-    Default: vpc-89ed60e3
-  PublicSubnet:
-    Type: String
-    Default: subnet-e194e18b
   EnvironmentName:
     Description: Environment name
     Type: String
@@ -25,7 +19,8 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Allow http traffic to our hosts and SSH from local only
-      VpcId: !Ref VpcId
+      VpcId:  !ImportValue
+        'Fn::Sub': '${EnvironmentName}-VPCID'
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 8080
@@ -85,8 +80,8 @@ Resources:
     Properties:
       MinSize: 1
       MaxSize: 1
-      VPCZoneIdentifier:
-        - !Ref PublicSubnet
+      VPCZoneIdentifier: !ImportValue
+        'Fn::Sub': '${EnvironmentName}-PUB1-SN'
       LaunchConfigurationName:
         Ref: LaunchConfiguration
       Tags:

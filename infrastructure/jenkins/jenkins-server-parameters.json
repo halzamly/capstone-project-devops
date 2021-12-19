@@ -1,0 +1,10 @@
+[
+    {
+        "ParameterKey": "EnvironmentName",
+        "ParameterValue": "dev"
+    },
+    {
+        "ParameterKey": "AmiId",
+        "ParameterValue": "ami-05f7491af5eef733a"
+    }
+]
