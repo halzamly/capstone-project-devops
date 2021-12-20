@@ -1,0 +1,5 @@
+URL to my GitHub repository:
+https://github.com/halzamly/capstone-project-devops
+
+URL for thr Docker Application deployed in kubernetes cluster:
+http://a9f64dca217ec471d82005c6aaa2df48-1402692039.eu-central-1.elb.amazonaws.com
