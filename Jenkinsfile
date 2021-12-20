@@ -26,6 +26,7 @@ pipeline {
         script {
           dockerImage = docker.build registry + ":latest"
         }
+
       }
     }
 
@@ -36,32 +37,34 @@ pipeline {
             dockerImage.push()
           }
         }
+
       }
     }
 
-    stage('Deploy kubernetes'){
-      steps{
-        withAWS(region:'eu-central-1', credentials:'aws-credentials') {
-	  sh 'echo "Create a kubeconfig for Amazon EKS"'
+    stage('Deploy kubernetes') {
+      steps {
+        withAWS(region: 'eu-central-1', credentials: 'aws-credentials') {
+          sh 'echo "Create a kubeconfig for Amazon EKS"'
           sh 'aws eks --region eu-central-1 update-kubeconfig --name dev-capstone-udacity'
           sh 'echo "Deploying to Kubernetes"'
-          sh 'kubectl apply -f ./kubernetes/deployment.yml'
+          sh 'kubectl apply -f ./kubernetes/deployment.yaml'
           sh 'echo "Deployment result"'
-          sh "kubectl get svc"
-          sh "kubectl get nodes"
-          sh "kubectl get deployment"
-          sh "kubectl get pod -o wide"
-          script{
+          sh 'kubectl get svc'
+          sh 'kubectl get nodes'
+          sh 'kubectl get deployment'
+          sh 'kubectl get pod -o wide'
+          script {
             serviceAddress = sh(script: "kubectl get svc --output=json | jq -r '.items[0] | .status.loadBalancer.ingress[0].hostname'", returnStdout: true).trim()
           }
-          sh "echo 'Deployment Complete!'"
+
+          sh 'echo \'Deployment Complete!\''
           sh "echo 'Application endpoint: http://$serviceAddress'"
-	    }
-	  }
-	}
+        }
+
+      }
+    }
 
   }
-
   environment {
     AWS_DEFAULT_REGION = 'eu-central-1'
     registry = 'halzamly/springbootdemo'
