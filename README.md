@@ -66,6 +66,8 @@ We used CloudFormation to deploy the Kubernetes Cluster and the node group insid
 ### Step 5: Test pipeline
 - Perform builds on the pipeline.
 
+![Test pipeline](screenshots/pipeline-jenkinss.png)
+
 ## Project Structure
 
     ```
