@@ -43,7 +43,7 @@ Create Jenkins server and install the plugins we will need.
 ### Step 4: Build pipeline
 - Create a pipeline using the Blue Ocean plugin in Jenkins.
 
-### Step 5: Test your pipeline
+### Step 5: Test pipeline
 - Perform builds on the pipeline.
 
 ## Project Structure
