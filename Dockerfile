@@ -1,5 +1,5 @@
 FROM maven:3.6.3-jdk-11
-;
+
 # Create a working directory
 WORKDIR /app
 
