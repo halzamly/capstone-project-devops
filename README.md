@@ -59,11 +59,11 @@ We used CloudFormation to deploy the Kubernetes Cluster and the node group insid
     ```bash 
     scripts/create-stack.sh eks-nodes infrastructure/kubernetes/eks-nodes.yml  infrastructure/kubernetes/eks-nodes-parameters.json
      ```
-CloudFormation stacks
+**CloudFormation stacks**
 
 ![cloudFormation-stacks](screenshots/cloudFormation-stacks.png)
 
-EKS cluster with one node in AWS
+**EKS cluster with one node in AWS**
 
 ![eks-cluster-overview](screenshots/eks-cluster-overview.png)
 
