@@ -46,7 +46,7 @@ Create Jenkins server and install the plugins we will need.
 ### Step 5: Test your pipeline
 - Perform builds on the pipeline.
 
-### Project Structure
+## Project Structure
 
     ```
     ├── Dockerfile
