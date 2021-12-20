@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-In this project you will apply the skills and knowledge which were developed throughout the Cloud DevOps Nanodegree program. These include:
+In this project we will apply the skills and knowledge which were developed throughout the Cloud DevOps Nanodegree program. These include:
 
 - Working in AWS
 - Using Jenkins to implement Continuous Integration and Continuous Deployment
@@ -14,7 +14,7 @@ In this project you will apply the skills and knowledge which were developed thr
 ## Steps in Completing the Project
 ### Step 1: Propose and Scope the Project
 - For the Docker application, we use a Java application (Spring-boot) under the `src` folder.
-- For Deployment type - rolling deployment has been chosen as a deployment strategy.
+- For Deployment type, rolling deployment has been chosen as a deployment strategy.
 - We use Jenkins to mplement Continuous Integration and Continuous Deployment
 
 The Jenkins pipeline will perform the following operations:
@@ -31,9 +31,9 @@ Create Jenkins server and install the plugins we will need.
 - Create a AWS stack (using cloudFormation) that deploys an auto scaling group with a launch configuration with all the commands necessary to onboard a Jenkins server.
 - Set up the environment to which we will deploy code.
 - Install the following plugins in Jenkins:
-- - CloudBees AWS Credentials
-- - Pipeline: AWS Steps
-- - Blue Ocean
+  - CloudBees AWS Credentials
+  - Pipeline: AWS Steps
+  - Blue Ocean
 - Add AWS credentials
 - Add Docker credentials- 
 
@@ -48,8 +48,7 @@ Create Jenkins server and install the plugins we will need.
 
 ### Project Structure
 
-    ```md
-    .
+    ```
     ├── Dockerfile
     ├── Jenkinsfile
     ├── pom.xml
