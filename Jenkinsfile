@@ -42,12 +42,12 @@ pipeline {
     stage('Deploy kubernetes'){
 	  steps{
         withAWS(region:'eu-central-1', credentials:'aws-credentials') {
-	      sh 'echo "Create a kubeconfig for Amazon EKS"'
-          sh 'aws eks --region eu-central-1 update-kubeconfig --name dev-capstone-udacity'
-	      sh 'echo "Test kube configuration"'
-	      sh 'kubectl get svc'
-          sh 'echo "Deploying to Kubernetes"'
-          sh 'kubectl apply -f ./kubernetes/deployment.yml'
+	    sh 'echo "Create a kubeconfig for Amazon EKS"'
+            sh 'aws eks --region eu-central-1 update-kubeconfig --name dev-capstone-udacity'
+	    sh 'echo "Test kube configuration"'
+	    sh 'kubectl get svc'
+            sh 'echo "Deploying to Kubernetes"'
+            sh 'kubectl apply -f ./kubernetes/deployment.yml'
 	    }
 	  }
 	}
