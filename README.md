@@ -36,7 +36,7 @@ Create Jenkins server and install the plugins we used. We used CloudFormation to
 - Create jenkins-server stack. This stack deploys an auto scaling group with a launch configuration with all the resources necessary to run a Jenkins server.
 
     ```bash
-    scripts/create-stack.sh dev-jenkins-server infrastructure/jenkins/jenkins-server.yml infrastructure/jenkins/jenkins-server-parameters.json
+    scripts/create-stack.sh jenkins-server infrastructure/jenkins/jenkins-server.yml infrastructure/jenkins/jenkins-server-parameters.json
     ```
 - Set up the environment to which we will deploy code.
 - Install the following plugins in Jenkins:
@@ -52,21 +52,33 @@ We used CloudFormation to deploy the Kubernetes Cluster and the node group insid
 - Stack deploys the Kubernetes Cluster
 
     ```bash
-    scripts/create-stack.sh dev-eks-cluster infrastructure/kubernetes/eks-cluster.yml infrastructure/kubernetes/eks-cluster-parameters.json
+    scripts/create-stack.sh eks-cluster infrastructure/kubernetes/eks-cluster.yml infrastructure/kubernetes/eks-cluster-parameters.json
      ```
  - Stack deploys node group inside that Cluster
  
     ```bash 
-    scripts/create-stack.sh dev-eks-cluster-nodes infrastructure/kubernetes/eks-nodes.yml  infrastructure/kubernetes/eks-nodes-parameters.json
+    scripts/create-stack.sh eks-nodes infrastructure/kubernetes/eks-nodes.yml  infrastructure/kubernetes/eks-nodes-parameters.json
      ```
+CloudFormation stacks
+
+![cloudFormation-stacks](screenshots/cloudFormation-stacks.png)
+
+EKS cluster with one node in AWS
+
+![eks-cluster-overview](screenshots/eks-cluster-overview.png)
 
 ### Step 4: Build pipeline
 - Create a pipeline using the Blue Ocean plugin in Jenkins.
+- All the steps that the pipeline includes are in the [Jenkinsfile](Jenkinsfile)
 
 ### Step 5: Test pipeline
 - Perform builds on the pipeline.
 
 ![Test pipeline](screenshots/pipeline-jenkins.png)
+
+- AWS EC2 Instances
+
+![ec2-instances](screenshots/ec2-instances-no-details.png)
 
 ## Project Structure
 
