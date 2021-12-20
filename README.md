@@ -114,3 +114,7 @@ EKS cluster with one node in AWS
         ├── run_kubernetes.sh
         └── upload_docker.sh
     ```
+    
+### Links & Resources
+* [**Jenkins User Documentation**](https://www.jenkins.io/doc/)
+* [**Creates an Amazon EKS control plane**](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-eks-cluster.html)
