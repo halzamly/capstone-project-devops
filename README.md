@@ -26,19 +26,39 @@ The Jenkins pipeline will perform the following operations:
 * Deploy the container to kubernetes on rolling deployment service. 
 
 ### Step 2: Use Jenkins, and implement rolling deployment. 
+Create Jenkins server and install the plugins we used. We used CloudFormation to build our infrastructure; i.e. the network, the Jenkins server, the Kubernetes Cluster and Kubernetes nodes. We prepared a shell script to create AWS stacks. We called it `create-cluster.sh` under the `scripts` folder.
 
-Create Jenkins server and install the plugins we will need.
-- Create a AWS stack (using cloudFormation) that deploys an auto scaling group with a launch configuration with all the commands necessary to onboard a Jenkins server.
+- Create network stack. This stack deploys the network infrastructure.
+
+    ```bash
+    scripts/create-stack.sh dev-network infrastructure/network/network.yml infrastructure/network/network-parameters.json
+    ```
+- Create jenkins-server stack. This stack deploys an auto scaling group with a launch configuration with all the resources necessary to run a Jenkins server.
+
+    ```bash
+    scripts/create-stack.sh dev-jenkins-server infrastructure/jenkins/jenkins-server.yml infrastructure/jenkins/jenkins-server-parameters.json
+    ```
 - Set up the environment to which we will deploy code.
 - Install the following plugins in Jenkins:
   - CloudBees AWS Credentials
   - Pipeline: AWS Steps
   - Blue Ocean
 - Add AWS credentials
-- Add Docker credentials- 
+- Add Docker credentials
 
 ### Step 3: Pick AWS Kubernetes as a Service.
-- We used CloudFormation to build our infrastructure; i.e. the network, the Kubernetes Cluster and Kubernetes nodesgroup.
+We used CloudFormation to deploy the Kubernetes Cluster and the node group inside it. We created 2 stacks as follows:
+
+- Stack deploys the Kubernetes Cluster
+
+    ```bash
+    scripts/create-stack.sh dev-eks-cluster infrastructure/kubernetes/eks-cluster.yml infrastructure/kubernetes/eks-cluster-parameters.json
+     ```
+ - Stack deploys node group inside that Cluster
+ 
+    ```bash 
+    scripts/create-stack.sh dev-eks-cluster-nodes infrastructure/kubernetes/eks-nodes.yml  infrastructure/kubernetes/eks-nodes-parameters.json
+     ```
 
 ### Step 4: Build pipeline
 - Create a pipeline using the Blue Ocean plugin in Jenkins.
